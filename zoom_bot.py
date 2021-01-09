@@ -2,7 +2,6 @@
 import pathlib
 import datetime
 import pyautogui
-import time
 import pygetwindow as gw
 import keyboard
 import sys
@@ -13,13 +12,13 @@ nid = None
 npass = None
 name = ""
 # Reading path.txt and extracting the path in which zoom is installed
-zoompath = pathlib.Path("path.txt")
+zoompath = pathlib.Path("txts\\path.txt")
 zoompath = zoompath.read_text()
 zoompath = pathlib.Path(zoompath,"Zoom.exe")
 zoompath = str(zoompath)
 zoompath = zoompath.replace("\\","\\\\")
 # Reading info.txt and extracting the info about id and passes
-info = pathlib.Path("info.txt")
+info = pathlib.Path("txts\\info.txt")
 info = info.read_text()
 info = info.split('\n')
 
@@ -51,7 +50,7 @@ def autoJoin():
     ch = datetime.datetime.now().hour # which hour is it now 
 
     # Reads the time_table.txt and stores it in the var timetable as an Array
-    timetable = pathlib.Path('time_table.txt')
+    timetable = pathlib.Path('txts\\time_table.txt')
     timetable = timetable.read_text()
     timetable = timetable.split('\n')
 
@@ -78,29 +77,38 @@ if userInput == "auto":
 else :
     nid , npass , name = manualJoin(userInput)
 # --------------------------------------------
+subprocess.Popen(zoompath) # launching zoom
+
+# checking if zoom has launched yet
+while pyautogui.locateOnScreen("img\\join_button.png") == None and pyautogui.locateOnScreen("img\\join_a_meeting.png") == None:
+    print("waiting for zoom to launch")
+    
+# checking if the user has signed in or not and locate the buttons accordingly
+try:
+    join = pyautogui.locateOnScreen("img\\join_button.png")
+    join = pyautogui.center(join)
+    pyautogui.click(join.x,join.y)
+except Exception as e:
+    join = pyautogui.locateOnScreen("img\\join_a_meeting.png")
+    join = pyautogui.center(join)
+    pyautogui.click(join.x,join.y)
+
+# showing class name , id and pass to user for cross correction
 print("joining class of " + name + " with id " + nid + " and pass " + npass)
 
-time.sleep(3)
+
+# waiting for zoom to load
+while pyautogui.locateOnScreen('img\\joining.png'):
+    print("waiting...")
 
 
-
-subprocess.Popen(zoompath) # launching zoom
-time.sleep(4)
-try:
-    join = pyautogui.locateOnScreen("join_button.png")
-    join = pyautogui.center(join)
-    pyautogui.click(join.x,join.y)
-except:
-    join = pyautogui.locateOnScreen("join_a_meeting.png")
-    join = pyautogui.center(join)
-    pyautogui.click(join.x,join.y)
-
-
-time.sleep(2)
-
+# entering id and pass 
 keyboard.write(str(nid))
 pyautogui.press("enter")
-time.sleep(3)
+while pyautogui.locateOnScreen('img\\passcode.png'):
+    print("waiting...")
 keyboard.write(str(npass))
 pyautogui.press("enter")
-sys.exit()
+# --------------------
+
+sys.exit() # closing zoom-bot.py
