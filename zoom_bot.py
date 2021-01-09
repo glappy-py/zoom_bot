@@ -1,5 +1,5 @@
 # Importing useful modules
-from pathlib import Path
+import pathlib
 import datetime
 import pyautogui
 import time
@@ -13,11 +13,13 @@ nid = None
 npass = None
 name = ""
 # Reading path.txt and extracting the path in which zoom is installed
-zoompath = Path("path.txt")
+zoompath = pathlib.Path("path.txt")
 zoompath = zoompath.read_text()
-zoompath = Path(zoompath,"Zoom.exe")
+zoompath = pathlib.Path(zoompath,"Zoom.exe")
+zoompath = str(zoompath)
+zoompath = zoompath.replace("\\","\\\\")
 # Reading info.txt and extracting the info about id and passes
-info = Path("info.txt")
+info = pathlib.Path("info.txt")
 info = info.read_text()
 info = info.split('\n')
 
@@ -49,7 +51,7 @@ def autoJoin():
     ch = datetime.datetime.now().hour # which hour is it now 
 
     # Reads the time_table.txt and stores it in the var timetable as an Array
-    timetable = Path('time_table.txt')
+    timetable = pathlib.Path('time_table.txt')
     timetable = timetable.read_text()
     timetable = timetable.split('\n')
 
@@ -81,14 +83,19 @@ print("joining class of " + name + " with id " + nid + " and pass " + npass)
 time.sleep(3)
 
 
-# TODO : use the zoompath var instead of hardcoded path
-subprocess.Popen("C:\\Users\\i ball\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe")
 
+subprocess.Popen(zoompath) # launching zoom
 time.sleep(4)
-join = pyautogui.locateOnScreen("img/join_button.png")
-join = pyautogui.center(join)
+try:
+    join = pyautogui.locateOnScreen("join_button.png")
+    join = pyautogui.center(join)
+    pyautogui.click(join.x,join.y)
+except:
+    join = pyautogui.locateOnScreen("join_a_meeting.png")
+    join = pyautogui.center(join)
+    pyautogui.click(join.x,join.y)
 
-pyautogui.click(join.x,join.y)
+
 time.sleep(2)
 
 keyboard.write(str(nid))
