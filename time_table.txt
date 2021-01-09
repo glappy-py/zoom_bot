@@ -1,0 +1,15 @@
+monday:10:vinod
+monday:11:renu
+tuesday:9:manju
+tuesday:10:rupa
+tuesday:11:nupur
+wednesday:9:manju
+wednesday:10:swap
+wednesday:11:nayak
+thursday:9:manju
+thursday:10:bindu
+thursday:11:sapna
+friday:10:rao
+friday:11:madhu
+saturday:10:leena
+saturday:11:sapna
