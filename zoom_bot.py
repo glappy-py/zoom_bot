@@ -5,6 +5,7 @@ import pyautogui
 import pygetwindow as gw
 import keyboard
 import sys
+from time import sleep
 import subprocess
 # ------------------------
 # Declaring the var for id , pass and teacher's name
@@ -65,15 +66,22 @@ def autoJoin():
         if name == t[0]:
             nid = t[1]
             npass = t[2]
-    # --------------------------
-    return nid,npass,name
+        # --------------------------
+        return nid,npass,name
+    # except :
+    #     print("there's no class right now !")
 
 
 # Asking the user for manual join or auto join
 userInput = input()
 if userInput == "auto":
-    
-    nid , npass , name = autoJoin()
+    try :
+        nid , npass , name = autoJoin()
+    except :
+        print("you don't have any class right now")
+        sleep(3)
+        sys.exit()
+        
 else :
     nid , npass , name = manualJoin(userInput)
 # --------------------------------------------
