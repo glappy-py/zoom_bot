@@ -98,14 +98,14 @@ print("joining class of " + name + " with id " + nid + " and pass " + npass)
 
 
 # waiting for zoom to load
-while pyautogui.locateOnScreen('img\\joining.png'):
+while pyautogui.locateOnScreen('img\\joining.png') == None:
     print("waiting...")
 
 
 # entering id and pass 
 keyboard.write(str(nid))
 pyautogui.press("enter")
-while pyautogui.locateOnScreen('img\\passcode.png'):
+while pyautogui.locateOnScreen('img\\passcode.png') == None:
     print("waiting...")
 keyboard.write(str(npass))
 pyautogui.press("enter")
