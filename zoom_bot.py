@@ -5,12 +5,13 @@ import pyautogui
 import pygetwindow as gw
 import keyboard
 import sys
-from time import sleep
+from time import sleep , time
 import subprocess
 # ------------------------
+startTime = time()
 # Declaring the var for id , pass and teacher's name
-nid = None  
-npass = None
+id = None  
+npass = None # Named it npass instead of pass because pass is a reserved word for python
 name = ""
 # Reading path.txt and extracting the path in which zoom is installed
 zoompath = pathlib.Path("txts\\path.txt")
@@ -28,12 +29,13 @@ def manualJoin(name):
     for i in range(0,len(info)):
         t = info[i].split(':')
         if name == t[0]:
-            nid = t[1]
+            id = t[1]
             npass = t[2]
-    return nid,npass,name
+    return id,npass,name
 # Reads the time_table.txt and and returns id , pass and teacher's name
 # according to the time table
 def autoJoin():
+    global name,id,npass
     # Checking which day is today 
     if datetime.date.today().weekday() == 0:
         cd = "monday"
@@ -64,10 +66,10 @@ def autoJoin():
     for i in range(0,len(info)):
         t = info[i].split(':')
         if name == t[0]:
-            nid = t[1]
+            id = t[1]
             npass = t[2]
         # --------------------------
-        return nid,npass,name
+        return id,npass,name
     # except :
     #     print("there's no class right now !")
 
@@ -76,14 +78,14 @@ def autoJoin():
 userInput = input()
 if userInput == "auto":
     try :
-        nid , npass , name = autoJoin()
+        id , npass , name = autoJoin()
     except :
         print("you don't have any class right now")
         sleep(3)
         sys.exit()
         
 else :
-    nid , npass , name = manualJoin(userInput)
+    id , npass , name = manualJoin(userInput)
 # --------------------------------------------
 subprocess.Popen(zoompath) # launching zoom
 
@@ -102,7 +104,7 @@ except Exception as e:
     pyautogui.click(join.x,join.y)
 
 # showing class name , id and pass to user for cross correction
-print("joining class of " + name + " with id " + nid + " and pass " + npass)
+print("joining class of " + name + " with id " + id + " and pass " + npass)
 
 
 # waiting for zoom to load
@@ -111,12 +113,14 @@ while pyautogui.locateOnScreen('img\\joining.png') == None:
 
 
 # entering id and pass 
-keyboard.write(str(nid))
+keyboard.write(str(id))
 pyautogui.press("enter")
 while pyautogui.locateOnScreen('img\\passcode.png') == None:
     print("waiting...")
 keyboard.write(str(npass))
 pyautogui.press("enter")
 # --------------------
-
+endTime = time()
+print('execution took '+ str(round(endTime - startTime,2)) +'s')
+sleep(3)
 sys.exit() # closing zoom-bot.py
