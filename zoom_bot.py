@@ -23,7 +23,6 @@ zoompath = zoompath.replace("\\","\\\\")
 info = pathlib.Path("txts\\info.txt")
 info = info.read_text()
 info = info.split('\n')
-
 # Takes in the teacher's name and returns their id and pass
 def manualJoin(name):
     for i in range(0,len(info)):
@@ -35,7 +34,6 @@ def manualJoin(name):
 # Reads the time_table.txt and and returns id , pass and teacher's name
 # according to the time table
 def autoJoin():
-    global name,id,npass
     # Checking which day is today 
     if datetime.date.today().weekday() == 0:
         cd = "monday"
@@ -51,12 +49,10 @@ def autoJoin():
         cd = "saturday"
     #---------------------------------------
     ch = datetime.datetime.now().hour # which hour is it now 
-
     # Reads the time_table.txt and stores it in the var timetable as an Array
     timetable = pathlib.Path('txts\\time_table.txt')
     timetable = timetable.read_text()
     timetable = timetable.split('\n')
-
     # Extracting the id and pass
     for i in range(0,len(timetable)):
         r = timetable[i].split(':')
@@ -69,9 +65,8 @@ def autoJoin():
             id = t[1]
             npass = t[2]
         # --------------------------
-        return id,npass,name
-    # except :
-    #     print("there's no class right now !")
+    return id,npass,name
+
 
 
 # Asking the user for manual join or auto join
