@@ -1,2 +1,0 @@
-monday:10:teacher1
-monday:12:teacher2
