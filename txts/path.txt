@@ -1,1 +1,1 @@
-C:\Users\USER\AppData\Roaming\Zoom\bin
+C:\Example\ZoomDirectory\Zoom\bin
